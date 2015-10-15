@@ -1,0 +1,28 @@
+/* CSS declarations go here */
+
+.example{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.example-enter {
+  transform: translateY(100%);
+  top: 100%;
+}
+
+.example-enter.example-enter-active {
+  transition: 1s;
+  top: 0px;
+  transform: translateY(0);
+  transition: top 5000ms ease-in;
+}
+
+.example-leave {
+  top: 0;
+}
+
+.example-leave.example-leave-active {
+  top: -100%;
+  transition: top 5000ms ease-in;
+}
