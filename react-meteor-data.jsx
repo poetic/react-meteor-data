@@ -6,7 +6,7 @@
  *                for usage with a subscription cacher
  */
 MeteorData = function MeteorData( Component, options ){
-  let {getData, subscriptions, shouldUpdate, subFunction} = (options || {});
+  let {getData, requestSubscriptions, shouldUpdate, subFunction} = (options || {});
   if( !subFunc ){ subFunc = Meteor.subscribe; }
 
   var newComponent = React.createClass({
@@ -14,8 +14,8 @@ MeteorData = function MeteorData( Component, options ){
       var self = this;
       self._subs = [];
 
-      if( subscriptions ){
-        var subRequests = subscriptions( self.props );
+      if( requestSubscriptions ){
+        var subRequests = requestSubscriptions( self.props );
         if( subRequests ){
           _.each(subRequests, function( subscriptionArgs){
             self._subs.push( subFunc( ...subscriptionArgs ) );
@@ -37,12 +37,12 @@ MeteorData = function MeteorData( Component, options ){
           if( getData ){
             self.data = getData( self.props );
             React.Children.forEach(function(component){
-              component.setState({data: self.data});
+              component.setState(self.data);
             });
           }
 
           self._meteorCalledSetState = true;
-          self.setState({data: this.data});
+          self.setState(this.data);
         });
 
       } else {

@@ -1,10 +1,10 @@
 Package.describe({
   name: 'poetic:react-meteor-data',
-  version: '0.0.1',
+  version: '0.0.1-rc.3',
   // Brief, one-line summary of the package.
-  summary: '',
+  summary: 'React component wrapper to add meteor reactivity to child',
   // URL to the Git repository containing the source code for this package.
-  git: '',
+  git: 'https://github.com/poetic/react-meteor-data',
   // By default, Meteor will default to using README.md for documentation.
   // To avoid submitting documentation, set this field to null.
   documentation: 'README.md'
