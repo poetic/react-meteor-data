@@ -10,44 +10,79 @@ MeteorData = function MeteorData( Component, options ){
   if( !subFunc ){ subFunc = Meteor.subscribe; }
 
   var newComponent = React.createClass({
+    loadingData(){
+      let loading = false;
+      _.each(self._subs,function(s){
+        console.log( s.ready() );
+        if( !s.ready() ){
+          console.log( "Loading" );
+          loading = true;
+        }
+      });
+      return loading;
+    },
+
+    subscribe(  ){
+      let self = this;
+
+      if( Meteor.isClient ){
+        if( requestSubscriptions ){
+          var subRequests = requestSubscriptions( self.props );
+          if( subRequests ){
+            self.loading = true;
+
+            let checkLoading = function(){
+              // Set loading to false after all subs complete
+              self.changeState({loadingData: self.loadingData()});
+            }
+            _.each(subRequests, function( subscriptionArgs){
+              subscriptionArgs.push( checkLoading );
+              self._subs.push( subFunc( ...subscriptionArgs ) );
+            });
+            // Set to true since we now have loading subs
+            self.changeState({loadingData: self.loadingData()});
+          }
+        }
+      }
+    },
+
+    changeState( state ){
+      this._meteorCalledSetState = true;
+      this.setState( state );
+    },
+
     componentWillMount: function() {
       var self = this;
       self._subs = [];
+      // Sets to false to start with.
+      self.changeState({loadingData: self.loadingData()});
 
-      if( requestSubscriptions ){
-        var subRequests = requestSubscriptions( self.props );
-        if( subRequests ){
-          _.each(subRequests, function( subscriptionArgs){
-            self._subs.push( subFunc( ...subscriptionArgs ) );
-          });
-        }
-      }
+      self.subscribe();
 
       self._meteorStateDep = new Tracker.Dependency();
       self._meteorFirstRun = true;
 
+      if( getData ){
+        self.data = getData( self.props );
+      }
+
       if (Meteor.isClient) {
-        if( getData ){
-          self.data = getData( self.props );
-        }
+
         Tracker.autorun(function(computation) {
           self._meteorComputation = computation;
           self._meteorStateDep.depend();
 
           if( getData ){
-            self.data = getData( self.props );
-            React.Children.forEach(function(component){
-              component.setState(self.data);
-            });
+            self.changeState({data: getData( self.props)});
           }
 
-          self._meteorCalledSetState = true;
-          self.setState(this.data);
+          self.changeState({data: getData( self.props)});
         });
 
       } else {
-        self._meteorCalledSetState = true;
-        self.setState({data: this.data});
+        if( getData ){
+          self.changeState({data: getData( self.props)});
+        }
       }
     },
 
@@ -79,7 +114,7 @@ MeteorData = function MeteorData( Component, options ){
     },
 
     render(){
-      return <Component data={this.data} {...this.props}/>;
+      return <Component {...this.props} {...this.state.data} loadingData={this.state.loadingData}/>;
     }
   });
 

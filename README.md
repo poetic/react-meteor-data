@@ -4,25 +4,26 @@ due to meteor data causing re-render.
     SomeClass = MeteorData(React.createClass({
       render(){
         // Use the data
-        this.props.data;
+        this.props.item;
 
         //...
       }
-    }),
-    getData(){
-      return Data.find().fetch();
-    },
+    }),{
+      getData(){
+        return {item: Item.findOne()};
+      },
 
-    requestSubscriptions(){
-      // Array of Subscriptions (subscription is array of args)
-      return [["subscriptiotName", "arg1"]];
-    },
+      requestSubscriptions(){
+        // Array of Subscriptions (subscription is array of args)
+        return [["subscriptiotName", "arg1"]];
+      },
 
-    shouldUpdate(props){
-      if( dontRedraw ){
-         return false;
-      }else{
-        return true;
-      }
-    });
+      shouldUpdate(props){
+        if( dontRedraw ){
+           return false;
+        }else{
+          return true;
+        }
+      })
+    }
 
