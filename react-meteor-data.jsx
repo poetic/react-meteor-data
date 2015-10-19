@@ -11,11 +11,10 @@ MeteorData = function MeteorData( Component, options ){
 
   var newComponent = React.createClass({
     loadingData(){
+      let self = this;
       let loading = false;
       _.each(self._subs,function(s){
-        console.log( s.ready() );
         if( !s.ready() ){
-          console.log( "Loading" );
           loading = true;
         }
       });
@@ -114,6 +113,7 @@ MeteorData = function MeteorData( Component, options ){
     },
 
     render(){
+      console.log( this.state.loadingData );
       return <Component {...this.props} {...this.state.data} loadingData={this.state.loadingData}/>;
     }
   });
