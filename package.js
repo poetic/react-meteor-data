@@ -1,6 +1,6 @@
 Package.describe({
   name: 'poetic:react-meteor-data',
-  version: '0.0.1-rc.4',
+  version: '0.0.1-rc.6',
   // Brief, one-line summary of the package.
   summary: 'React component wrapper to add meteor reactivity to child',
   // URL to the Git repository containing the source code for this package.
