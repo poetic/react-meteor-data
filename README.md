@@ -8,22 +8,10 @@ due to meteor data causing re-render.
 
         //...
       }
-    }),{
+    }),
+    {
       getData(){
         return {item: Item.findOne()};
       },
-
-      requestSubscriptions(){
-        // Array of Subscriptions (subscription is array of args)
-        return [["subscriptiotName", "arg1"]];
-      },
-
-      shouldUpdate(props){
-        if( dontRedraw ){
-           return false;
-        }else{
-          return true;
-        }
-      })
-    }
+    });
 
