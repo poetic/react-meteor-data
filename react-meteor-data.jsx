@@ -32,7 +32,9 @@ MeteorData = function MeteorData( Component, options ){
         this.props = nextProps;
         this.state = nextState;
         newData = this._meteorDataManager.calculateData();
-      } finally {
+      } catch( e ){
+        throw( e );
+      }finally {
         this.props = saveProps;
         this.state = saveState;
       }
@@ -47,7 +49,6 @@ MeteorData = function MeteorData( Component, options ){
     getMeteorData: getData,
 
     render(){
-      console.log( this.data );
       return <Component {...this.props} {...this.state.data} loadingData={this.state.loadingData}/>;
     }
   });
@@ -130,17 +131,6 @@ class MeteorDataManager {
         }
       });
     });
-
-    if (Package.mongo && Package.mongo.Mongo) {
-      Object.keys(data).forEach(function (key) {
-        if (data[key] instanceof Package.mongo.Mongo.Cursor) {
-          console.warn(
-  "Warning: you are returning a Mongo cursor from getMeteorData. This value " +
-  "will not be reactive. You probably want to call `.fetch()` on the cursor " +
-  "before returning it.");
-        }
-      });
-    }
 
     return data;
   }
