@@ -200,7 +200,6 @@ MeteorData = function MeteorData( Component, options ){
               self.changeState({loadingData: self.loadingData()});
               self._meteorStateDep.changed();
             }
-            console.log( subRequests );
             _.each(subRequests, function( subscriptionArgs){
               subscriptionArgs.push( checkLoading );
               self._subs.push( subFunction( ...subscriptionArgs ) );
@@ -276,7 +275,6 @@ MeteorData = function MeteorData( Component, options ){
     },
 
     render(){
-      console.log( this.state.data );
       return <Component {...this.props} {...this.state.data} loadingData={this.state.loadingData}/>;
     }
   });
