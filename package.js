@@ -15,6 +15,7 @@ Package.onUse(function(api) {
   api.use('ecmascript');
   api.use('underscore');
   api.use('react@0.1.13','client');
+  api.use('react-meteor-data','client');
   api.addFiles('react-meteor-data.jsx','client');
   api.export("MeteorData",'client');
 });
