@@ -14,7 +14,7 @@ MeteorData = function MeteorData( Component, options ){
     mixins: [ReactMeteorData],
 
     getMeteorData(){
-      return getData();
+      return getData(this.props);
     },
 
     render(){
