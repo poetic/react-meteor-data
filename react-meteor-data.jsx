@@ -11,7 +11,7 @@ MeteorData = function MeteorData( Component, options ){
 
   var newComponent = React.createClass({
     displayName: 'meteorData',
-    mixins: [ReactMeteorData],
+    mixins: [ReactMeteorData, React.addons.PureRenderMixin],
 
     getMeteorData(){
       return getData(this.props);
